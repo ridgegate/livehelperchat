@@ -1,8 +1,8 @@
 Live Helper Chat Installation
 ============================
-wget https://raw.githubusercontent.com/ridgegate/livehelperchat/master/install_lhc.sh
-sudo chmod +x install_lhc.sh 
-sudo ./install_lhc.sh 
+* wget https://raw.githubusercontent.com/ridgegate/livehelperchat/master/install_lhc.sh
+* sudo chmod +x install_lhc.sh 
+* sudo ./install_lhc.sh 
 
 Live Helper Chat Source
 ========================
