@@ -23,15 +23,16 @@ read -p "Choose your MariaDB Version [ENTER] : " MDB_VERSION
 clear
 read -t 30 -p "Thank you. Please press [ENTER] continue or [Control]+[C] to cancel"
 
-#Add MariaDB Repository
+#Add MariaDB & bcmathRepository
 sudo apt-get install -y software-properties-common
 sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
 sudo echo "deb [arch=amd64,arm64,ppc64el] http://mirrors.accretive-networks.net/mariadb/repo/$MDB_VERSION/ubuntu bionic main"  | sudo tee -a /etc/apt/sources.list
+sudo echo "deb http://security.ubuntu.com/ubuntu artful-security main universe"  | sudo tee -a /etc/apt/sources.list
 sudo apt-get update && sudo apt-get upgrade -y
 
 #Install nginx and php7.2
 apt install nginx nginx-extras -y
-apt install php-fpm php-mysql php-xml php-mbstring php-common php-curl php-gd php-zip php-soap -y
+apt install php-fpm php-mysql php-xml php-mbstring php-common php-curl php-gd php-zip php-soap php-bcmath unzip -y
 phpenmod mbstring 
 
 #---Following is optional changes to the PHP perimeters that are typically required for WP + Woo themes
@@ -129,11 +130,12 @@ echo "FLUSH PRIVILEGES;" | sudo mysql -u root -p$NEW_MYSQL_PASSWORD
 echo "delete from mysql.user where user='mysql';" | sudo mysql -u root -p$NEW_MYSQL_PASSWORD
 
 wget https://github.com/remdex/livehelperchat/archive/master.zip
-tar xzvf master.zip
-cp -a ./master /var/www/html/$MY_DOMAIN
+unzip ./master.zip
+mkdir /var/www/html/$MY_DOMAIN
+cp -a ./livehelperchat-master/lhc_web/. /var/www/html/$MY_DOMAIN
 chown -R www-data:www-data /var/www/html/$MY_DOMAIN
 chmod -R 777 /var/www/html/$MY_DOMAIN/cache
-chmod -R 777 /var/www/html/$MY_DOMAIN/settings/settings.ini.php
+chmod -R 777 /var/www/html/$MY_DOMAIN/settings/settings.ini.default.php
 chmod -R 777 /var/www/html/$MY_DOMAIN/var/storage
 chmod -R 777 /var/www/html/$MY_DOMAIN/var/userphoto
 clear
